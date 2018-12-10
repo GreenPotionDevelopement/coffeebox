@@ -39,8 +39,11 @@ namespace CoffeeBox
         [DllImport("user32.dll")]
         private static extern bool MoveWindow(IntPtr Handle, int x, int y, int w, int h, bool repaint);
 
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
+        private const int SW_HIDE = 0;
+        private const int SW_SHOW = 5;
+
+        [DllImport("User32")]
+        private static extern int ShowWindow(int hwnd, int nCmdShow);
 
         private static readonly int GWL_STYLE = -16;
         private static readonly int WS_VISIBLE = 0x10000000;
@@ -58,6 +61,8 @@ namespace CoffeeBox
         {
         }
 
+        // E:\Mina Torrents\WOW Wotlk 3.3.5a\Wow.exe
+
         public async void StartProc(System.Drawing.Rectangle rect)
         {
             Action action = () =>
@@ -65,13 +70,14 @@ namespace CoffeeBox
                 try
                 {
                     Console.WriteLine("\nX: {0}, W: {1}\nY: {2}, H: {3}\n", rect.X, rect.Width, rect.Y, rect.Height);
-                    string exeName = @"E:\Mina Torrents\WOW Wotlk 3.3.5a\Wow.exe";
+                    string exeName = @"notepad.exe";
 
                     IntPtr _appWin = IntPtr.Zero;
                     Process _childp = null;
 
-                    var procInfo = new System.Diagnostics.ProcessStartInfo(exeName);
-
+                    var procInfo = new System.Diagnostics.ProcessStartInfo(exeName)
+                    {
+                    };
                     procInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(exeName);
                     // Start the process
                     _childp = System.Diagnostics.Process.Start(procInfo);
@@ -86,13 +92,11 @@ namespace CoffeeBox
                     // Put it into this form
                     var helper = new WindowInteropHelper(Window.GetWindow(this.g1));
                     SetParent(_appWin, helper.Handle);
-                    ShowWindow(_appWin, 5);
                     // Remove border and whatnot
                     SetWindowLong(_appWin, GWL_STYLE, WS_VISIBLE);
 
                     // Move the window to overlay it on this window
                     MoveWindow(_appWin, (int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, true);
-
                     allProcs.Add(_childp);
                 }
                 catch (Exception ex)
@@ -133,13 +137,19 @@ namespace CoffeeBox
                 var rct = new System.Drawing.Rectangle
                 {
                     // Make Grid System Work
-                    X = (int)relP.X,
-                    Y = (int)relP.Y + i * (int)this.g1.Height / total,
-                    Width = (int)this.g1.Width,
-                    Height = (int)this.g1.Height / total,
+                    X = (int)relP.X + i * (int)this.g1.Width / total,
+                    Y = (int)relP.Y,
+                    Width = (int)this.g1.Width / total,
+                    Height = (int)this.g1.Height,
                 };
                 StartProc(rct);
             }
+        }
+
+        private void mainFrm_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Console.WriteLine("size changed: X:{0}, Y: {1}", e.NewSize.Width, e.NewSize.Height);
+            Console.WriteLine("Grid changed: X:{0}, Y: {1}", this.g1.Width, this.g1.Height);
         }
     }
 }
