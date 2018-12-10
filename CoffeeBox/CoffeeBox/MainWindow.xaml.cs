@@ -64,8 +64,8 @@ namespace CoffeeBox
             {
                 try
                 {
-                    Console.WriteLine("{0}:{1}", rect.X, rect.Width);
-                    string exeName = @"notepad.exe";
+                    Console.WriteLine("\nX: {0}, W: {1}\nY: {2}, H: {3}\n", rect.X, rect.Width, rect.Y, rect.Height);
+                    string exeName = @"E:\Mina Torrents\WOW Wotlk 3.3.5a\Wow.exe";
 
                     IntPtr _appWin = IntPtr.Zero;
                     Process _childp = null;
@@ -126,17 +126,17 @@ namespace CoffeeBox
         private void Btn_StartInitialize_Click(object sender, RoutedEventArgs e)
         {
             // WORK HERE
-            int total = 2;
+            int total = 3;
             for (int i = 0; i < total; i++)
             {
                 Point relP = g1.getRelativePoint(this);
                 var rct = new System.Drawing.Rectangle
                 {
                     // Make Grid System Work
-                    X = (int)relP.X + (int)this.g1.Width,
-                    Y = (int)relP.Y,
-                    Width = (int)this.g1.Width / total,
-                    Height = (int)this.g1.Height,
+                    X = (int)relP.X,
+                    Y = (int)relP.Y + i * (int)this.g1.Height / total,
+                    Width = (int)this.g1.Width,
+                    Height = (int)this.g1.Height / total,
                 };
                 StartProc(rct);
             }
