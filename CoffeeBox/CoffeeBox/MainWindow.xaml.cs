@@ -111,6 +111,11 @@ namespace CoffeeBox
         {
             if (allProcs.Count == 0) { return; }
             e.Cancel = true;
+            KillAllProcs(true);
+        }
+
+        public  void KillAllProcs(bool closeWindow = false)
+        {
             Thread th = new Thread(() =>
             {
                 foreach (var proc in allProcs.Where(x => !x.HasExited))
@@ -120,8 +125,11 @@ namespace CoffeeBox
                 }
                 allProcs.Clear();
 
-                Dispatcher.Invoke(() => this.Close(),
-                System.Windows.Threading.DispatcherPriority.Normal);
+                if (closeWindow)
+                {
+                   Dispatcher.Invoke(() => Close(),
+                   System.Windows.Threading.DispatcherPriority.Normal);
+                }
             });
             th.Start();
         }
@@ -129,27 +137,44 @@ namespace CoffeeBox
         // TODO
         private void Btn_StartInitialize_Click(object sender, RoutedEventArgs e)
         {
-            // WORK HERE
-            int total = 3;
-            for (int i = 0; i < total; i++)
-            {
-                Point relP = g1.getRelativePoint(this);
-                var rct = new System.Drawing.Rectangle
+                // WORK HERE
+                int total = 2;
+                for (int i = 0; i < total; i++)
                 {
-                    // Make Grid System Work
-                    X = (int)relP.X + i * (int)this.g1.Width / total,
-                    Y = (int)relP.Y,
-                    Width = (int)this.g1.Width / total,
-                    Height = (int)this.g1.Height,
-                };
-                StartProc(rct);
-            }
+                    Point relP = g1.getRelativePoint(this);
+                    var rct = new System.Drawing.Rectangle
+                    {
+                        // Make Grid System Work
+                        X = (int)relP.X + i * (int)this.g1.ActualWidth / total,
+                        Y = (int)relP.Y,
+                        Width = (int)this.g1.ActualWidth / total - (int)this.g1.Margin.Left,
+                        Height = (int)this.g1.ActualHeight - (int)this.g1.Margin.Top,
+                    };
+                    StartProc(rct);
+                }
         }
 
         private void mainFrm_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Console.WriteLine("size changed: X:{0}, Y: {1}", e.NewSize.Width, e.NewSize.Height);
-            Console.WriteLine("Grid changed: X:{0}, Y: {1}", this.g1.Width, this.g1.Height);
+            Console.WriteLine("Tab Control changed: X:{0}, Y: {1}", this.tabControl1.ActualWidth, this.tabControl1.ActualHeight);
+            Console.WriteLine("Grid changed: X:{0}, Y: {1}", this.g1.ActualWidth, this.g1.ActualHeight);
+            int i = 0;
+            var total = allProcs.Where(x => !x.HasExited && x.MainWindowHandle != IntPtr.Zero).Count();
+            foreach (var proc in allProcs.Where(x => !x.HasExited && x.MainWindowHandle != IntPtr.Zero))
+            {
+                Point relP = g1.getRelativePoint(this);
+                var rct = new System.Drawing.Rectangle
+                {
+                    // Make Grid System Work
+                    X = (int)relP.X + i * (int)this.g1.ActualWidth / total,
+                    Y = (int)relP.Y,
+                    Width = (int)this.g1.ActualWidth / total - (int)this.g1.Margin.Left,
+                    Height = (int)this.g1.ActualHeight - (int)this.g1.Margin.Top,
+                };
+                proc.ChangeSize(rct, true);
+                i++;
+            }
         }
     }
 }

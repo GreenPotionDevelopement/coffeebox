@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="CoffeeBox - WoW Multibox" Height="500" Width="756" Background="#FF252525" Loaded="mainFrm_Loaded" Closing="mainFrm_Closing" ResizeMode="CanResizeWithGrip" ShowMaxRestoreButton="False" IsMaxRestoreButtonEnabled="False" WindowStartupLocation="CenterScreen" SizeChanged="mainFrm_SizeChanged">
+        Title="CoffeeBox - WoW Multibox" Height="500" Width="756" Background="#FF252525" Loaded="mainFrm_Loaded" Closing="mainFrm_Closing" ResizeMode="CanResizeWithGrip" ShowMaxRestoreButton="False" IsMaxRestoreButtonEnabled="False" WindowStartupLocation="CenterScreen" SizeChanged="mainFrm_SizeChanged" NonActiveBorderBrush="#FF1585B5" NonActiveWindowTitleBrush="#FF1585B5" NonActiveGlowBrush="#FF1585B5" GlowBrush="#FF1585B5" BorderBrush="#FF1585B5">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <StackPanel Orientation="Horizontal">
@@ -11,19 +11,17 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <DockPanel>
-            <TabControl x:Name="tabControl1" HorizontalAlignment="Left" Height="449" Margin="10,10,0,0" VerticalAlignment="Top">
-                <TabItem Header="Multibox">
-                    <Grid>
-                        <Canvas x:Name="g1" HorizontalAlignment="Left" Height="384" Margin="10,10,0,0" VerticalAlignment="Top" Width="702">
-                        </Canvas>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Settings">
-                    <Grid>
-                    </Grid>
-                </TabItem>
-            </TabControl>
-        </DockPanel>
+        <TabControl x:Name="tabControl1" HorizontalAlignment="Stretch" Margin="10,10,0,0" VerticalAlignment="Stretch">
+            <TabItem Header="Multibox">
+                <Grid>
+                    <Canvas x:Name="g1" HorizontalAlignment="Stretch" Margin="10,10,0,0" VerticalAlignment="Stretch">
+                    </Canvas>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Controls:MetroWindow>
