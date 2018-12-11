@@ -153,7 +153,7 @@ namespace CoffeeBox
                     StartProc(rct);
                 }
         }
-
+        // TODO
         private void mainFrm_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Console.WriteLine("size changed: X:{0}, Y: {1}", e.NewSize.Width, e.NewSize.Height);
